@@ -4,10 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-// asldkjasldkjna
-// askjlfhlasdkjfhasdlkfjhasdf
 
-// GIT HUB TEST feb2 
 
 public class ServerGraph
 {
@@ -26,7 +23,11 @@ public class ServerGraph
 
     // 2 marks
     // Create an empty server graph
-    public ServerGraph() ...
+    public ServerGraph(){
+        NumVertices = 0;
+        V = 0;
+        E = 0;
+    }
 
     // 2 marks
     // Return the index of the server with the given name; otherwise return -1
@@ -37,7 +38,7 @@ public class ServerGraph
 
     private void DoubleCapacity() {
       
-        ServerNode[] newV = new ServerNode[V.length * 2];
+        WebServer[] newV = new WebServer[V.length * 2];
 
         
         System.arraycopy(V, 0, newV, 0, V.length);
