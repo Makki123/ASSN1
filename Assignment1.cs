@@ -24,9 +24,11 @@ public class ServerGraph
     // 2 marks
     // Create an empty server graph
     public ServerGraph(){
-        NumVertices = 0;
-        V = 0;
-        E = 0;
+        // ask about it if it should be 1 or 0
+        V = new WebServer[0];
+        E = new bool[0, 0];
+        NumServers = 0;
+
     }
 
     // 2 marks
