@@ -36,7 +36,7 @@ public class ServerGraph
     // Return the index of the server with the given name; otherwise return -1
     private int FindServer(string name) {
         int i;
-        for (i = 0; i < V.Count; i++)
+        for (i = 0; i < NumServers; i++)
         {
             if (V[i].Name.Equals(name))
                 return i;
