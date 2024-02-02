@@ -49,12 +49,26 @@ public class ServerGraph
 
     private void DoubleCapacity() {
       
-        WebServer[] newV = new WebServer[V.length * 2];
+       int capacity = V.Length * 2;
 
-        
-        System.arraycopy(V, 0, newV, 0, V.length);
+        WebServer[] oldV = V;
+        WebServer[] V = new WebServer[capacity];
 
-        V = newV
+        bool[,] oldE = E;
+        bool[,] E = new bool[capacity, capacity];
+
+        for (int i = oldV.Length; i >= 0; i--)
+        {
+            V[i] = oldV[i];
+        }
+
+        for (int i = oldV.Length; i >= 0; i--)
+        {
+            for (int j = oldV.Length; j >= 0; j--)
+            {
+                E[i,j] = oldE[i,j];
+            }
+        }
     }
 
     // 3 marks
