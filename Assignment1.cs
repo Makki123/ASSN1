@@ -28,12 +28,21 @@ public class ServerGraph
         V = new WebServer[0];
         E = new bool[0, 0];
         NumServers = 0;
-
+    askjdfajksdfh 
+    
     }
 
     // 2 marks
     // Return the index of the server with the given name; otherwise return -1
-    private int FindServer(string name) ...
+    private int FindServer(string name) {
+        int i;
+        for (i = 0; i < V.Count; i++)
+        {
+            if (V[i].Name.Equals(name))
+                return i;
+        }
+        return -1;
+    }
 
     // 3 marks
     // Double the capacity of the server graph with the respect to web servers
