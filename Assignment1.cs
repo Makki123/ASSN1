@@ -8,10 +8,8 @@ using System.Threading.Tasks;
 // askjlfhlasdkjfhasdlkfjhasdf
 
 public class ServerGraph
-{ askjdfhaskldf
-asdkjfhajkfdh
-asdjfhaskj
-    // 3 marksASSAS
+{
+    // 3 marksA
     private class WebServer
     {
         public string Name;
