@@ -34,7 +34,16 @@ public class ServerGraph
 
     // 3 marks
     // Double the capacity of the server graph with the respect to web servers
-    private void DoubleCapacity() ...
+
+    private void DoubleCapacity() {
+      
+        ServerNode[] newV = new ServerNode[V.length * 2];
+
+        
+        System.arraycopy(V, 0, newV, 0, V.length);
+
+        V = newV
+    }
 
     // 3 marks
     // Add a server with the given name and connect it to the other server
