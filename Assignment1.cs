@@ -4,7 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+// asldkjasldkjna
+// askjlfhlasdkjfhasdlkfjhasdf
 
+// GIT HUB TEST feb2 
 
 public class ServerGraph
 {
@@ -23,12 +26,11 @@ public class ServerGraph
 
     // 2 marks
     // Create an empty server graph
-    public ServerGraph(){
-        // ask about it if it should be 1 or 0
+    public ServerGraph()
+    {
         V = new WebServer[0];
         E = new bool[0, 0];
         NumServers = 0;
-
     }
 
     // 2 marks
@@ -37,16 +39,7 @@ public class ServerGraph
 
     // 3 marks
     // Double the capacity of the server graph with the respect to web servers
-
-    private void DoubleCapacity() {
-      
-        WebServer[] newV = new WebServer[V.length * 2];
-
-        
-        System.arraycopy(V, 0, newV, 0, V.length);
-
-        V = newV
-    }
+    private void DoubleCapacity() ...
 
     // 3 marks
     // Add a server with the given name and connect it to the other server
@@ -157,6 +150,7 @@ namespace COIS_3020_Assignment_1
     {
         static void Main(string[] args)
         {
+            Console.ReadLine();
 
         }
     }
