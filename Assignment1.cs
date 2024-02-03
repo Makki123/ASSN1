@@ -173,12 +173,61 @@ public class ServerGraph
     // Return all servers that would disconnect the server graph into
     // two or more disjoint graphs if ever one of them would go down
     // Hint: Use a variation of the depth-first search
-    public string[] CriticalServers()
+    public string[] CriticalServers();
 
     // 6 marks
     // Return the shortest path from one server to another
     // Hint: Use a variation of the breadth-first search
-    public int ShortestPath(string from, string to);
+    public List<string> ShortestPath(string from, string to)
+{
+    bool[] visited = new bool[NumServers];
+    int[] parent = new int[NumServers];
+    Queue<int> queue = new Queue<int>();
+
+    int start = FindServer(from);
+    int end = FindServer(to);
+
+    if (start == -1 || end == -1)
+    {
+        Console.WriteLine("One or both servers not found");
+        return new List<string>();
+    }
+
+    queue.Enqueue(start);
+    visited[start] = true;
+
+    while (queue.Count != 0)
+    {
+        int currentVertex = queue.Dequeue();
+
+        for (int neighbor = 0; neighbor < NumServers; neighbor++)
+        {
+            if (!visited[neighbor] && E[currentVertex, neighbor])
+            {
+                queue.Enqueue(neighbor);
+                visited[neighbor] = true;
+                parent[neighbor] = currentVertex;
+            }
+        }
+    }
+
+    List<string> path = new List<string>();
+
+    // Reconstruct the path from 'to' to 'from'
+    for (int currentVertex = end; currentVertex != start; currentVertex = parent[currentVertex])
+    {
+        path.Add(V[currentVertex].Name);
+    }
+
+    // Add the starting server
+    path.Add(from);
+
+    // Reverse the path to get it from 'from' to 'to'
+    path.Reverse();
+
+    return path;
+}
+
 
     // 4 marks
     // Print the name and connections of each server as well as
