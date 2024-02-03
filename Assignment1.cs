@@ -49,7 +49,7 @@ public class ServerGraph
 
     private void DoubleCapacity() {
       
-       int capacity = V.Length * 2;
+      int capacity = V.Length * 2;
 
         WebServer[] oldV = V;
         WebServer[] V = new WebServer[capacity];
@@ -57,14 +57,14 @@ public class ServerGraph
         bool[,] oldE = E;
         bool[,] E = new bool[capacity, capacity];
 
-        for (int i = oldV.Length; i >= 0; i--)
+        for (int i = 0; i < oldV.Length; i++)
         {
             V[i] = oldV[i];
         }
 
-        for (int i = oldV.Length; i >= 0; i--)
+        for (int i = 0; i < oldV.Length; i++)
         {
-            for (int j = oldV.Length; j >= 0; j--)
+            for (int j = 0; j < oldV.Length; j++)
             {
                 E[i,j] = oldE[i,j];
             }
@@ -74,7 +74,40 @@ public class ServerGraph
     // 3 marks
     // Add a server with the given name and connect it to the other server
     // Return true if successful; otherwise return false
-    public bool AddServer(string name, string other) ...
+    public bool AddServer(string name, string other){
+        
+        if (NumServers == V.Length)
+        {
+            DoubleCapacity();
+        }
+
+        if (FindServer(other) == -1)
+        {
+            Console.WriteLine("Other server not found.");
+            return false;
+        }
+        else if (FindServer(name) > -1)
+        {
+            Console.WriteLine("Server already exists.");
+            return false;
+        }
+        else
+        {
+            V[NumServers].Name = name;
+            for (int i = 0; i <= NumServers; i++)
+            {
+                E[i, NumServers] = false;
+                E[NumServers, i] = false;
+            }
+
+            E[NumServers,FindServer(other)] = true;
+            E[FindServer(other),NumServers] = true;
+
+            NumServers++;
+            return true;
+
+        }
+    }
 
     // 3 marks
     // Add a webpage to the server with the given name
