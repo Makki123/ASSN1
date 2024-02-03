@@ -128,18 +128,46 @@ public class ServerGraph
     // Remove the server with the given name by assigning its connections
     // and webpages to the other server
     // Return true if successful; otherwise return false
-    public bool RemoveServer(string name, string other)
+    public bool RemoveServer(string name, string other){
+        
+            int i, j;
+            if ((i = FindServer(name)) > -1)
+            {
+                NumServers--;
+                V[i] = V[NumServers];
+                for (j = NumServers; j >= 0; j--)
+                {
+                    E[j, i] = E[j, NumServers];
+                    E[i, j] = E[NumServers, j];
+                }
+                return true;
+            }
+            return false;
+            
+    }
 
     // 3 marks (Bonus)
     // Remove the webpage from the server with the given name
     // Return true if successful; otherwise return false
-    public bool RemoveWebPage(string webpage, string name)
-
+    public bool RemoveWebPage(string webpage, string name);
     // 3 marks
     // Add a connection from one server to another
     // Return true if successful; otherwise return false
     // Note that each server is connected to at least one other server
     public bool AddConnection(string from, string to)
+    {
+        int i, j;
+            if ((i = FindServer(from)) > -1 && (j = FindServer(to)) > -1)
+            {
+                if (E[i, j] == false)
+                {
+                    E[i, j] = true;
+                    return true;
+                }
+                
+            }
+            return false;
+    }
 
     // 10 marks
     // Return all servers that would disconnect the server graph into
@@ -150,12 +178,26 @@ public class ServerGraph
     // 6 marks
     // Return the shortest path from one server to another
     // Hint: Use a variation of the breadth-first search
-    public int ShortestPath(string from, string to)
+    public int ShortestPath(string from, string to);
 
     // 4 marks
     // Print the name and connections of each server as well as
     // the names of the webpages it hosts
-    public void PrintGraph()
+    public void PrintGraph(){
+
+        for (int i = 0; i < P.Count; i++)
+        {
+            Console.WriteLine("Website: {0}", P[i].Name);
+            Console.WriteLine("Links");
+            
+            for (int j = 0; j < P[i].E.Count; j++)
+            {
+                Console.WriteLine(P[i].E[j].Name);
+            }
+            Console.WriteLine("");
+        }
+
+    }
     
 }
 
