@@ -131,17 +131,19 @@ public class ServerGraph
     public bool RemoveServer(string name, string other){
         
             int i, j;
-            if ((i = FindServer(name)) > -1)
+            if ((j = FindServer(other)) > -1)
             {
-                NumServers--;
-                V[i] = V[NumServers];
-                for (j = NumServers; j >= 0; j--)
+
+                if ((i = FindServer(name)) > -1)
                 {
+                    NumServers--;
+                    V[i] = V[NumServers];
                     E[j, i] = E[j, NumServers];
                     E[i, j] = E[NumServers, j];
+                    return true;
                 }
-                return true;
             }
+            
             return false;
             
     }
@@ -168,18 +170,106 @@ public class ServerGraph
             }
             return false;
     }
+    public bool RemoveCrticalServer(string name)
+    {
+        
+            int i;
+            
+                if ((i = FindServer(name)) > -1)
+                {
+                    NumServers--;
+                    V[i] = V[NumServers];
+            
+                for (int j = NumServers; j >= 0; j--)
+                {
+                    E[j, i] = E[j, NumServers];
+                    E[i, j] = E[NumServers, j];
+                }
+                    return true;
+                }
+            
+            return false;
+            
+    }
+    public List<string> CriticalServersHelper(string servername)
+    {
+        List<string> serverconnections = new List<string>();
 
+        int indexserver = FindServer(servername);
+        //iterate throught vertices
+        for (int i = 0; i < NumServers; i++)
+        {
+           if(E[indexserver,i] == true)
+           {
+             serverconnections.Add(V[i].Name);
+            
+           }
+        }
+        return serverconnections;
+
+    }
     // 10 marks
     // Return all servers that would disconnect the server graph into
     // two or more disjoint graphs if ever one of them would go down
     // Hint: Use a variation of the depth-first search
-    public string[] CriticalServers();
+    public string[] CriticalServers()
+    {
+    List<string> criticalServersList = new List<string>(); //correct
+
+    for (int i = 0; i < NumServers; i++)
+    {
+        // Temporarily remove the i-th server
+        string removedServer = V[i].Name;
+
+        List<string> serverconnections = CriticalServersHelper(removedServer);
+
+        RemoveCrticalServer(removedServer); // not keeping track of the edges
+        // Perform DFS to check connectivity
+        bool[] visited = new bool[NumServers];
+        int connectedComponents = 0;
+
+        for (int j = 0; j < NumServers; j++)
+        {
+            if (!visited[j])
+            {
+                DFS(j, visited);
+
+            }
+        }
+
+        // If removing the current server increases the number of connected components,
+        // then it's a critical server
+        if (connectedComponents > 1)
+        {
+            criticalServersList.Add(removedServer);
+        }
+
+        // Add the server back to the graph
+        AddServer(removedServer, null);
+    }
+
+    return criticalServersList.ToArray();
+}
+
+private void DFS(int v, bool[] visited)
+{
+    visited[v] = true;
+
+    for (int i = 0; i < NumServers; i++)
+    {
+        if (E[v, i] && !visited[i])
+        {
+            DFS(i, visited);
+        }
+    }
+}
+
 
     // 6 marks
     // Return the shortest path from one server to another
     // Hint: Use a variation of the breadth-first search
     public List<string> ShortestPath(string from, string to)
-{
+    {
     bool[] visited = new bool[NumServers];
     int[] parent = new int[NumServers];
     Queue<int> queue = new Queue<int>();
@@ -336,7 +426,31 @@ public class WebGraph
     // Return true if successful; otherwise return false
     public bool RemovePage(string name, ServerGraph S)
     {
+        if (FindPage(name) == -1)
+        {
+            Console.WriteLine("WebPage doesn't exist");
+            return false;
+        }
+        else
+        {   
+            for (int i = 0; i < P.Count; i++)
+            {
+                for (int j = 0; j < P[i].E.Count; j++)
+                {
+                    if (P[i].E[j].Name.Equals(name))
+                    {
+                        RemoveLink(P[i].Name,name);
+                    }
+                }
+            }
 
+            // Removes the webpage from the server
+            S.RemoveWebPage(name, P[FindPage(name)].Server);
+
+            // Removes the webpage from the web graph
+            P.RemoveAt(FindPage(name));
+            return true;
+        }
     }
     // 3 marks
     // Add a hyperlink from one webpage to another
