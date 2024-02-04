@@ -226,7 +226,6 @@ public class ServerGraph
         RemoveCrticalServer(removedServer); // not keeping track of the edges
         // Perform DFS to check connectivity
         bool[] visited = new bool[NumServers];
-        int connectedComponents = 0;
 
         for (int j = 0; j < NumServers; j++)
         {
@@ -236,16 +235,25 @@ public class ServerGraph
 
             }
         }
-
-        // If removing the current server increases the number of connected components,
-        // then it's a critical server
-        if (connectedComponents > 1)
+        for (int x = 0; x < visited.Length; x++)
         {
-            criticalServersList.Add(removedServer);
+            if (visited[x] == false)
+            {
+                criticalServersList.Add(V[i].Name);
+            }
         }
-
+        for (int u = 0; u <serverconnections.Count; u++)
+        {
+        
         // Add the server back to the graph
-        AddServer(removedServer, null);
+        bool flag = AddServer(removedServer, serverconnections[u]);
+        if (!flag)
+        {
+            AddConnection(removedServer,serverconnections[u]);
+        }
+        }
+        
+
     }
 
     return criticalServersList.ToArray();
